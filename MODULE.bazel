@@ -1,0 +1,43 @@
+bazel_dep(name = "aspect_bazel_lib", version = "2.11.0")
+bazel_dep(name = "aspect_rules_js", version = "2.1.3")
+
+npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
+npm.npm_translate_lock(
+    name = "npm",
+    pnpm_lock = "//:pnpm-lock.yaml",
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+use_repo(npm, "npm")
+
+pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
+use_repo(pnpm, "pnpm")
+
+bazel_dep(name = "aspect_rules_ts", version = "3.4.0")
+
+rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext", dev_dependency = True)
+rules_ts_ext.deps()
+use_repo(rules_ts_ext, "npm_typescript")
+
+bazel_dep(name = "aspect_rules_swc", version = "2.3.0")
+bazel_dep(name = "bazel_skylib", version = "1.7.1")
+bazel_dep(name = "rules_oci", version = "2.2.0")
+
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+oci.pull(
+    name = "gostatic",
+    digest = "sha256:7e5718f98f2172f7c8dffd152ef0b203873ba889c8d838b2e730484fc71f6acd",
+    image = "docker.io/pierrezemb/gostatic",
+    platforms = [
+        "darwin/amd64",
+        "darwin/arm64",
+        "linux/amd64",
+        "linux/arm/v5",
+        "linux/arm/v6",
+        "linux/arm/v7",
+        "linux/arm64",
+        "windows/amd64",
+    ],
+)
+use_repo(oci, "gostatic")
+
+bazel_dep(name = "rules_pkg", version = "1.0.1")
