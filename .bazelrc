@@ -1,0 +1,13 @@
+# TypeScript
+common --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
+
+# Windows
+common --enable_runfiles
+
+# The following flag shall not be enabled.
+# Bazel is not yet able to create relative symlinks on Windows.
+# See https://github.com/bazelbuild/bazel/pull/24213.
+#startup --windows_enable_symlinks
+
+# User override
+try-import %workspace%/user.bazelrc
