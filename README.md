@@ -53,6 +53,13 @@ Run all tests (ESLint, TSC type checks):
 bazel test //...
 ```
 
+Run minimal production server (assuming `docker` runtime):
+
+```sh
+bazel run //:load
+docker run --rm -p 8043:8043 react-typescript-vite-bazel
+```
+
 ## Some explanations
 
 There certainly are multiple ways to integrate Bazel with Vite. On this project, I've taken the following path: Bazel does its job, present Vite files in the way it expects them, and then Vite can do its job too.

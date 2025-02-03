@@ -3,6 +3,8 @@ bazel_dep(name = "aspect_rules_js", version = "2.8.2")
 bazel_dep(name = "aspect_rules_swc", version = "2.5.0")
 bazel_dep(name = "aspect_rules_ts", version = "3.7.1")
 bazel_dep(name = "bazel_skylib", version = "1.8.2")
+bazel_dep(name = "rules_oci", version = "2.2.6")
+bazel_dep(name = "rules_pkg", version = "1.1.0")
 
 npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
 npm.npm_translate_lock(
@@ -11,6 +13,24 @@ npm.npm_translate_lock(
     verify_node_modules_ignored = "//:.bazelignore",
 )
 use_repo(npm, "npm")
+
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+oci.pull(
+    name = "gostatic",
+    digest = "sha256:7e5718f98f2172f7c8dffd152ef0b203873ba889c8d838b2e730484fc71f6acd",
+    image = "docker.io/pierrezemb/gostatic",
+    platforms = [
+        "darwin/amd64",
+        "darwin/arm64",
+        "linux/amd64",
+        "linux/arm/v5",
+        "linux/arm/v6",
+        "linux/arm/v7",
+        "linux/arm64",
+        "windows/amd64",
+    ],
+)
+use_repo(oci, "gostatic")
 
 pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm", dev_dependency = True)
 use_repo(pnpm, "pnpm")
