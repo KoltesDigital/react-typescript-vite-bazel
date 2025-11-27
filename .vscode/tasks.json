@@ -1,0 +1,47 @@
+{
+	"tasks": [
+		{
+			"args": ["build", "//:build"],
+			"command": "bazel",
+			"label": "Build",
+			"problemMatcher": [],
+			"type": "process"
+		},
+		{
+			"command": "bazel run '@pnpm' -- --dir $PWD install",
+			"label": "Install Node.js dependencies",
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
+			"command": "nohup ibazel build //:dev > /dev/null 2>&1 & ; bazel run //:dev ; kill $!",
+			"label": "Run dev server",
+			"problemMatcher": [],
+			"type": "shell",
+			"windows": {
+				"command": "$p = Start-Process -WindowStyle Hidden ibazel 'build //:dev' -PassThru ; try { bazel run //:dev } finally { $p.Kill() }",
+				"options": {
+					"shell": {
+						"args": ["-NoProfile"],
+						"executable": "powershell"
+					}
+				}
+			}
+		},
+		{
+			"args": ["run", "//:preview"],
+			"command": "bazel",
+			"label": "Run preview server",
+			"problemMatcher": [],
+			"type": "process"
+		},
+		{
+			"args": ["test", "//..."],
+			"command": "bazel",
+			"label": "Run tests",
+			"problemMatcher": [],
+			"type": "process"
+		}
+	],
+	"version": "2.0.0"
+}
